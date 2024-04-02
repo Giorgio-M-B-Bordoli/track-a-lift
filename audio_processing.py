@@ -1,6 +1,5 @@
-import requests
-from pathlib import Path
 from openai import OpenAI
+from pathlib import Path
 
 
 # Function to prompt the user for a file name and return the file path
@@ -15,18 +14,15 @@ def get_audio_file_path():
 # Function to transcribe audio using the OpenAI Whisper API
 def transcribe_audio(file_path):
     client = OpenAI()
-
-audio_file= open("/path/to/file/audio.mp3", "rb")
-transcription = client.audio.transcriptions.create(
-  model="whisper-1", 
-  file=audio_file
-)
-print(transcription.text)
+    with open(file_path, 'rb') as audio_file:
+        transcription = client.audio.transcriptions.create(
+          model="whisper-1",
+          file=audio_file
+        )
+    return transcription['text']
 
 # Main script execution
 if __name__ == "__main__":
     file_path = get_audio_file_path()
     transcription = transcribe_audio(file_path)
     print("Transcription:", transcription)
-
-
