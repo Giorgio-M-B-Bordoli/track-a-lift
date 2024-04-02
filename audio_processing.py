@@ -1,6 +1,7 @@
-from openai import OpenAI
+import openai
 from pathlib import Path
 
+# Ensure you've set the OPENAI_API_KEY environment variable for your API key
 
 # Function to prompt the user for a file name and return the file path
 def get_audio_file_path():
@@ -13,9 +14,8 @@ def get_audio_file_path():
 
 # Function to transcribe audio using the OpenAI Whisper API
 def transcribe_audio(file_path):
-    client = OpenAI()
     with open(file_path, 'rb') as audio_file:
-        transcription = client.audio.transcriptions.create(
+        transcription = openai.Audio.create(
           model="whisper-1",
           file=audio_file
         )
