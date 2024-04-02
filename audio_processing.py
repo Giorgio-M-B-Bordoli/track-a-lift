@@ -15,7 +15,7 @@ def get_audio_file_path():
 # Function to transcribe audio using the OpenAI Whisper API
 def transcribe_audio(file_path):
     with open(file_path, 'rb') as audio_file:
-        transcription = openai.Audio.create(
+        transcription = openai.audio.transcription.create(
           model="whisper-1",
           file=audio_file
         )
