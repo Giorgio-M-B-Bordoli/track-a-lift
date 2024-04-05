@@ -1,0 +1,12 @@
+import subprocess
+
+# Prompt the user for the file name of the audio
+file_name = input("Please provide the file name of your audio: ")
+
+# Ensure the path to transcriber.py is correct and adjust the Python executable if necessary
+result = subprocess.run(['/usr/local/bin/python3', '/Users/giorgio/Desktop/internal_calls/holder/transcriber.py', file_name], capture_output=True, text=True)
+
+# Print standard output and standard error
+print("Standard Output:", result.stdout)
+if result.stderr:
+    print("Standard Error:", result.stderr)
