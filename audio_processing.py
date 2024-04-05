@@ -1,28 +1,23 @@
-import openai
-from pathlib import Path
+import sys
+from openai import OpenAI
 
-# Ensure you've set the OPENAI_API_KEY environment variable for your API key
+client = OpenAI()
 
-# Function to prompt the user for a file name and return the file path
-def get_audio_file_path():
-    file_name = input("Please provide the file name of your audio: ")
-    file_path = Path(file_name)
-    if not file_path.exists() or not file_path.is_file():
-        print("File does not exist. Please check the file name and try again.")
-        exit()
-    return file_path
+if len(sys.argv) < 2:
+    print("Audio file name not provided.")
+    sys.exit(1)
 
-# Function to transcribe audio using the OpenAI Whisper API
-def transcribe_audio(file_path):
-    with open(file_path, 'rb') as audio_file:
-        transcription = openai.audio.transcription.create(
-          model="whisper-1",
-          file=audio_file
+file_name = sys.argv[1]
+
+try:
+    # Assuming the file exists and is readable
+    with open(file_name, "rb") as audio_file:
+        transcription = client.audio.transcriptions.create(
+            model="whisper-1", 
+            file=audio_file
         )
-    return transcription['text']
+    # Print the transcription or a placeholder text if the 'text' key is missing
+    print(transcription)
+except Exception as e:
+    print(f"An error occurred: {e}", file=sys.stderr)
 
-# Main script execution
-if __name__ == "__main__":
-    file_path = get_audio_file_path()
-    transcription = transcribe_audio(file_path)
-    print("Transcription:", transcription)
